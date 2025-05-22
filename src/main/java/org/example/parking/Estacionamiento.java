@@ -13,16 +13,44 @@ public class Estacionamiento {
         // validar que no exista otro vehiculo con la misma patente, es un caso de error, retornar FALSE
         // validar si existe el cliente registrado, agregar el nuevo vehiculo en la lista del cliente existente, caso contrario crear un nuevo registro
         // si el proceso es exitoso retornar TRUE
+        if (vehiculosEstacionados.size() >= capacidadMaxima) {
+            return false;
+        }
+        Cliente cliente = clientesRegistrados.get(dni);
+        /**/
+        if (cliente == null) {
+            cliente= new Cliente(dni, nombre);
+            Ticket ticket = new Ticket(cliente, vehiculo);
+            cliente.agregarVehiculo(vehiculo);
+            clientesRegistrados.put(dni, cliente);
+            vehiculosEstacionados.put(vehiculo.getPatente(),ticket);
+        }else{
+            Vehiculo vehiculo1 = cliente.buscarVehiculoPorPatente(vehiculo.getPatente());
+            if (vehiculo1 != null) {
+                return false;
+            }
+            cliente.agregarVehiculo(vehiculo);
+            Ticket ticket = new Ticket(cliente, vehiculo);
+            clientesRegistrados.put(dni, cliente);
+            vehiculosEstacionados.put(vehiculo.getPatente(),ticket);
+        }
 
-        return false;
+        return true;
     }
 
     public Ticket retirarVehiculo(String patente) throws Exception {
         // TODO implementar la lógica para retirar un vehiculo del parking
         // validar que exista la patente, caso contrario arrojar la exception "Vehiculo no encontrado"
         // calcular y retornar el ticket del vehiculoEstacionado (ver Ticket.marcarSalida())
-
-        return null;
+        Vehiculo vehiculo = vehiculosEstacionados.get(patente).getVehiculo();
+        if (vehiculo == null) {
+            throw new Exception("Vehiculo no encontrado");
+        }
+        Ticket ticket = vehiculosEstacionados.get(patente);
+        ticket.marcarSalida();
+        ticket.calcularPrecio();
+        vehiculosEstacionados.remove(patente);
+        return ticket;
     }
 
     public List<Ticket> listarVehiculosEstacionados() {

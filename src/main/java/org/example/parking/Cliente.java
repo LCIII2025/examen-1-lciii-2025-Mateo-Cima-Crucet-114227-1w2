@@ -19,13 +19,24 @@ public class Cliente {
 
     public void agregarVehiculo(Vehiculo vehiculo) {
         // TODO implementar la carga de vehiculos en el cliente
+        Vehiculo v = buscarVehiculoPorPatente(vehiculo.getPatente());
+        if (v == null) {
+            vehiculos.add(vehiculo);
+        }else
+            throw new RuntimeException("Vehiculo con patente repetida");
 
     }
 
     public Vehiculo buscarVehiculoPorPatente(String patente) {
         // TODO implementar la busqueda de un vehiculo segun su patente
+        //boolean encontrado = false;
+        Vehiculo vehiculo = null;
+        for (Vehiculo vehiculos : vehiculos) {
+            if (vehiculos.getPatente().equals(patente)) {
+                vehiculo=vehiculos;
+            }
+        }
 
-
-        return null;
+        return vehiculo;
     }
 }

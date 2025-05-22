@@ -36,8 +36,19 @@ public class Ticket {
         // el importe es por hora redondeando el tiempo hacia arriba,
         // por ejemplo si estuvo 45 minutos se le tarifa por 60, si estuvo 80 minutos se le tarifa por 120 minutos, etc...
         // retornar el importe final
+        double importe = 0;
+        long minutos=calcularMinutos();
+        long horas =minutos/60;
+        if (minutos % 60 != 0) {
+            horas+=1;
+        }
+        switch (vehiculo.getTipo()) {
+            case SUV -> importe = horas*130;
+            case AUTO -> importe = horas*100;
+            case PICKUP -> importe = horas*180;
+        }
 
-        return 0;
+        return importe;
     }
 
 }
