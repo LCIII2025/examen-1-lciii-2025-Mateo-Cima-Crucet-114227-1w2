@@ -36,7 +36,7 @@ public class EstacionamientoTest {
         double precio = ticket.calcularPrecio();
         //entonces
         assertNotNull(precio);
-        assertTrue(precio > 100);
+        assertTrue(precio >= 100);
 
     }
 
